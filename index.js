@@ -39,7 +39,7 @@ client.on('message', async message => {
       message.channel.send(embed);
       return;
     }
-    if (member.bot || member.id == message.author.id) {
+    if (member.user.bot || member.id == message.author.id) {
       let embed = new Discord.RichEmbed()
         .setTimestamp()
         .setAuthor(`${message.author.username}#${message.author.discriminator}`, message.author.displayAvatarURL, `http://discord.com/users/${message.author.id}`)
