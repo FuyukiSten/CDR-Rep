@@ -2,13 +2,13 @@ const Discord = require('discord.js');
 const client = new Discord.Client();
 const mongoose = require('mongoose');
 const Rep = require('./database/models/repSchema.js');
-mongoose.connect('mongodb://admin:adminpasswordowooooaxxx1@ds155714.mlab.com:55714/alfhydb', {
+mongoose.connect(process.env.mongodbhost, {
   useNewUrlParser: true
 });
 
 let config = {
   'prefix': 'r!',
-  'token': 'NTI4OTMyMzA0ODk5NDA3ODgy.Dx44cw.KgCgnP273M05W7iBxEIeg82mwIM',
+  'token': process.env.TOKEN,
   'whitelist': ['505096421532368907']
 }
 function toMedal(_numbers) {
@@ -235,5 +235,29 @@ client.on('message', async message => {
         message.channel.send(embed);
     })
   }
+  function clean(text) {
+  if (typeof(text) === "string")
+    return text.replace(/`/g, "`" + String.fromCharCode(8203)).replace(/@/g, "@" + String.fromCharCode(8203));
+  else
+      return text;
+}
+  if(cmd == 'eval') {
+  if(config.whitelist.contains(message.author.id)) {
+    try {
+      const code = args.join(" ");
+      let evaled = eval(code);
+ 
+      if (typeof evaled !== "string")
+        evaled = require("util").inspect(evaled);
+ 
+      message.channel.send(clean(evaled), {code:"xl"});
+    } catch (err) {
+      message.channel.send(`\`ERROR\` \`\`\`xl\n${clean(err)}\n\`\`\``);
+    }
+  } else {
+  message.reply('Sem permissão !');
+  }
+  }
+  
 });
 client.login(config.token);
