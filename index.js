@@ -39,7 +39,7 @@ client.on('message', async message => {
       message.channel.send(embed);
       return;
     }
-    if (member.user.bot || member.id == message.author.id) {
+    if (member.bot || member.id == message.author.id) {
       let embed = new Discord.RichEmbed()
         .setTimestamp()
         .setAuthor(`${message.author.username}#${message.author.discriminator}`, message.author.displayAvatarURL, `http://discord.com/users/${message.author.id}`)
@@ -184,11 +184,11 @@ client.on('message', async message => {
   }
   if (cmd == 'leaderboard') {
     await message.delete();
-    await message.delete();
-    let tofind = {
-    guildID: message.guild.id
-    }
-    Rep.find(tofind).sort([
+    Rep.find({
+      guildID: message.guild.id
+    }).sort([
+      ['repv', 'descending']
+    ]).exec((err, res) => {
       if (err) console.log(err);
 
       let embed = new Discord.RichEmbed()
