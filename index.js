@@ -184,11 +184,11 @@ client.on('message', async message => {
   }
   if (cmd == 'leaderboard') {
     await message.delete();
-    Rep.find({
-      guildID: message.guild.id
-    }).sort([
-      ['repv', 'descending']
-    ]).exec((err, res) => {
+    await message.delete();
+    let tofind = {
+    guildID: message.guild.id
+    }
+    Rep.find(tofind).sort([
       if (err) console.log(err);
 
       let embed = new Discord.RichEmbed()
